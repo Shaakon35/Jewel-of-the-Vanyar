@@ -1,0 +1,12 @@
+Prompt for app.layer.ai
+________________________________________________________
+
+Keep the grey background, don't modify it. 
+
+remove the yellow arrow 
+remove the green heart 
+remove the blue shield 
+
+and 
+use the symbol : damage 
+use a color : pink

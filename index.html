@@ -23,45 +23,88 @@
                 <h3>Choose your Appearance:</h3>
                 <div id="character-selector">
                     <label>
-                        <input type="radio" name="character-choice" value="images/character1.jpg" checked>
-                        <img src="images/character1.jpg" alt="Character 1" class="character-option-img">
+                        <input type="radio" name="character-choice" value="images/c1.png" checked>
+                        <img src="images/c1.png" alt="Character 1" class="character-option-img">
                     </label>
                     <label>
-                        <input type="radio" name="character-choice" value="images/character2.jpg">
-                        <img src="images/character2.jpg" alt="Character 2" class="character-option-img">
+                        <input type="radio" name="character-choice" value="images/c2.png">
+                        <img src="images/c2.png" alt="Character 2" class="character-option-img">
                     </label>
                     <label>
-                        <input type="radio" name="character-choice" value="images/character3.jpg">
-                        <img src="images/character3.jpg" alt="Character 3" class="character-option-img">
+                        <input type="radio" name="character-choice" value="images/c3.png">
+                        <img src="images/c3.png" alt="Character 3" class="character-option-img">
+                    </label>
+                    <label>
+                        <input type="radio" name="character-choice" value="images/c4.png">
+                        <img src="images/c4.png" alt="Character 4" class="character-option-img">
+                    </label>
+                    <label>
+                        <input type="radio" name="character-choice" value="images/c5.png">
+                        <img src="images/c5.png" alt="Character 5" class="character-option-img">
+                    </label>
+                     <label>
+                        <input type="radio" name="character-choice" value="images/c6.png">
+                        <img src="images/c6.png" alt="Character 6" class="character-option-img">
+                    </label>
+                     <label>
+                        <input type="radio" name="character-choice" value="images/c7.png">
+                        <img src="images/c7.png" alt="Character 7" class="character-option-img">
                     </label>
                 </div>
                 
-                <h3>Base Stats (Sum = 9):</h3>
+                <h3>Base Stats:</h3>
                 <div id="customization-stats">
-                    <p>Strength: <span id="custom-strength"></span></p>
-                    <p>Speed: <span id="custom-speed"></span></p>
-                    <p>Agility: <span id="custom-agility"></span></p>
+                    <div class="stat-line">
+                        <img src="images/runes/PV.jpg" alt="HP" class="stat-logo">
+                        <span class="stat-label">HP</span>
+                        <span id="custom-hp" class="stat-value"></span>
+                    </div>
+                    <div class="stat-line">
+                        <img src="images/runes/ATK.jpg" alt="ATK" class="stat-logo">
+                        <span class="stat-label">ATK</span>
+                        <span id="custom-atk" class="stat-value"></span>
+                    </div>
+                    <div class="stat-line">
+                        <img src="images/runes/DEF.jpg" alt="DEF" class="stat-logo">
+                        <span class="stat-label">DEF</span>
+                        <span id="custom-def" class="stat-value"></span>
+                    </div>
+                    <div class="stat-line">
+                        <img src="images/runes/Agility.jpg" alt="Agility" class="stat-logo">
+                        <span class="stat-label">Agility</span>
+                        <span id="custom-agi" class="stat-value"></span>
+                    </div>
+                    <div class="stat-line">
+                        <img src="images/runes/Speed.jpg" alt="Speed" class="stat-logo">
+                        <span class="stat-label">Speed</span>
+                        <span id="custom-speed" class="stat-value"></span>
+                    </div>
+                    <hr>
+                    <div class="stat-line">
+                        <img src="images/runes/CRIT.jpg" alt="Crit. Rate" class="stat-logo">
+                        <span class="stat-label">Crit. Rate</span>
+                        <span id="custom-crit-rate" class="stat-value"></span>
+                    </div>
+                    <div class="stat-line">
+                        <img src="images/runes/CRITDMG.jpg" alt="Crit. Dmg" class="stat-logo">
+                        <span class="stat-label">Crit. Dmg</span>
+                        <span id="custom-crit-dmg" class="stat-value"></span>
+                    </div>
+                    <div class="stat-line">
+                        <img src="images/runes/PREC.jpg" alt="Accuracy" class="stat-logo">
+                        <span class="stat-label">Accuracy</span>
+                        <span id="custom-accuracy" class="stat-value"></span>
+                    </div>
+                    <div class="stat-line">
+                        <img src="images/runes/RES.jpg" alt="Resistance" class="stat-logo">
+                        <span class="stat-label">Resistance</span>
+                        <span id="custom-resistance" class="stat-value"></span>
+                    </div>
                 </div>
-
-                <h3>Customize Color:</h3>
-                <div class="option">
-                    <label for="color-hue-slider">Color Hue:</label>
-                    <input type="range" id="color-hue-slider" min="0" max="360" value="0">
-                </div>
-                 <div class="option-note">
-                    <i>Note: The options below require layered image assets to function.</i>
-                </div>
-                <div class="option">
-                    <label for="color-hair">Hair Color:</label>
-                    <input type="color" id="color-hair" value="#4d4d4d" disabled>
-                </div>
-                <div class="option">
-                    <label for="color-weapon">Weapon Color:</label>
-                    <input type="color" id="color-weapon" value="#808080" disabled>
-                </div>
+                <button id="randomize-stats-btn">Randomize Stats</button>
             </div>
         </div>
-         <button id="accept-customization-btn">Create Character</button>
+        <button id="accept-customization-btn">Create Character</button>
     </div>
 
     <div id="home-screen" class="hidden">
@@ -69,16 +112,19 @@
         <div id="player-summary">
             <div id="home-character-display"></div>
             <h2 id="home-player-name"></h2>
-            <div class="stats">
-                <p>Level: <span id="home-player-level">1</span></p>
-                <p>Experience: <span id="home-player-xp">0</span> / <span id="home-xp-to-next-level">10</span></p>
-                <p>HP: <span id="home-player-hp">100</span></p>
-                <p>Strength: <span id="home-player-strength">10</span></p>
-                <p>Speed: <span id="home-player-speed">5</span></p>
-                 <p>Agility: <span id="home-player-agility">5</span></p>
+            <div class="stats-grid">
+                <p><strong>Level</strong>: <span id="home-player-level"></span></p>
+                <p><strong>XP</strong>: <span id="home-player-xp"></span> / <span id="home-xp-to-next-level"></span></p>
+                <p><strong>HP</strong>: <span id="home-player-hp"></span></p>
+                <p><strong>ATK</strong>: <span id="home-player-atk"></span></p>
+                <p><strong>DEF</strong>: <span id="home-player-def"></span></p>
+                <p><strong>Agility</strong>: <span id="home-player-agi"></span></p>
+                <p><strong>Speed</strong>: <span id="home-player-speed"></span></p>
+                <p><strong>Crit. Rate</strong>: <span id="home-player-crit-rate"></span>%</p>
+                <p><strong>Crit. Dmg</strong>: <span id="home-player-crit-dmg"></span>%</p>
+                <p><strong>Accuracy</strong>: <span id="home-player-accuracy"></span>%</p>
+                <p><strong>Resistance</strong>: <span id="home-player-resistance"></span>%</p>
             </div>
-            <h3>Skills</h3>
-            <ul id="player-skills"></ul>
         </div>
         <button id="go-to-fight-btn">Find a New Opponent</button>
     </div>
@@ -88,23 +134,23 @@
             <div class="character-container" id="player-container">
                 <h2 id="player-name"></h2>
                 <div class="stats">
-                    <p>Level: <span id="player-level">1</span></p>
-                    <p>HP: <span id="player-hp">100</span></p>
+                    <p>Level: <span id="player-level"></span></p>
+                    <p>HP: <span id="player-hp"></span></p>
                 </div>
                 <img src="" alt="Player Character" class="character-image" id="player-image">
+            </div>
+            <div id="fight-log-container">
+                 <div id="fight-log"></div>
             </div>
             <div class="character-container" id="enemy-container">
                  <h2 id="enemy-name"></h2>
                 <div class="stats">
-                    <p>Level: <span id="enemy-level">1</span></p>
-                    <p>HP: <span id="enemy-hp">100</span></p>
+                    <p>Level: <span id="enemy-level"></span></p>
+                    <p>HP: <span id="enemy-hp"></span></p>
                 </div>
                  <img src="" alt="Enemy Character" class="character-image" id="enemy-image">
             </div>
         </div>
-         <div id="fight-log-container">
-             <div id="fight-log"></div>
-         </div>
     </div>
 
     <script src="script.js"></script>

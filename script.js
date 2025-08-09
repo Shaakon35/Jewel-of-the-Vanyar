@@ -9,31 +9,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const createCharacterBtn = document.getElementById('create-character-btn');
     const characterNameInput = document.getElementById('character-name-input');
     const acceptCustomizationBtn = document.getElementById('accept-customization-btn');
+    const randomizeStatsBtn = document.getElementById('randomize-stats-btn');
     const characterChoices = document.querySelectorAll('input[name="character-choice"]');
-    const colorHueSlider = document.getElementById('color-hue-slider');
     const characterCanvas = document.getElementById('character-canvas');
     const ctx = characterCanvas.getContext('2d');
     let currentCharacterImg = new Image();
 
     // Customization Stats Display
-    const customStrengthEl = document.getElementById('custom-strength');
+    const customHpEl = document.getElementById('custom-hp');
+    const customAtkEl = document.getElementById('custom-atk');
+    const customDefEl = document.getElementById('custom-def');
+    const customAgiEl = document.getElementById('custom-agi');
     const customSpeedEl = document.getElementById('custom-speed');
-    const customAgilityEl = document.getElementById('custom-agility');
+    const customCritRateEl = document.getElementById('custom-crit-rate');
+    const customCritDmgEl = document.getElementById('custom-crit-dmg');
+    const customAccuracyEl = document.getElementById('custom-accuracy');
+    const customResistanceEl = document.getElementById('custom-resistance');
 
-    // Home
-    const goToFightBtn = document.getElementById('go-to-fight-btn');
-    const homeCharacterDisplay = document.getElementById('home-character-display');
+    // Home Screen Stats
     const homePlayerNameEl = document.getElementById('home-player-name');
     const homePlayerLevelEl = document.getElementById('home-player-level');
     const homePlayerXpEl = document.getElementById('home-player-xp');
     const homeXpToNextLevelEl = document.getElementById('home-xp-to-next-level');
     const homePlayerHpEl = document.getElementById('home-player-hp');
-    const homePlayerStrengthEl = document.getElementById('home-player-strength');
+    const homePlayerAtkEl = document.getElementById('home-player-atk');
+    const homePlayerDefEl = document.getElementById('home-player-def');
+    const homePlayerAgiEl = document.getElementById('home-player-agi');
     const homePlayerSpeedEl = document.getElementById('home-player-speed');
-    const homePlayerAgilityEl = document.getElementById('home-player-agility');
-    const playerSkillsEl = document.getElementById('player-skills');
+    const homePlayerCritRateEl = document.getElementById('home-player-crit-rate');
+    const homePlayerCritDmgEl = document.getElementById('home-player-crit-dmg');
+    const homePlayerAccuracyEl = document.getElementById('home-player-accuracy');
+    const homePlayerResistanceEl = document.getElementById('home-player-resistance');
+    const homeCharacterDisplay = document.getElementById('home-character-display');
+    const goToFightBtn = document.getElementById('go-to-fight-btn');
 
-    // Game
+    // Game Screen
     const fightLog = document.getElementById('fight-log');
     const playerContainer = document.getElementById('player-container');
     const playerNameEl = document.getElementById('player-name');
@@ -46,22 +56,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const enemyHpEl = document.getElementById('enemy-hp');
     const enemyImageEl = document.getElementById('enemy-image');
 
-    // --- Game State ---
+    // --- Game State & Constants ---
     let player = {};
     let enemy = {};
-    const characterImages = ["images/character1.jpg", "images/character2.jpg", "images/character3.jpg"];
+    const characterImages = [
+        "images/c1.png", "images/c2.png", "images/c3.png", "images/c4.png", 
+        "images/c5.png", "images/c6.png", "images/c7.png"
+    ];
     const enemyNames = ["Grommash", "Skullcrusher", "Bonebreaker", "Gorehowl", "Nightfall"];
-
+    
     // --- Event Listeners ---
     createCharacterBtn.addEventListener('click', loadOrCreateCharacter);
     acceptCustomizationBtn.addEventListener('click', finalizeCharacterCreation);
+    randomizeStatsBtn.addEventListener('click', () => {
+        generateInitialStats(player);
+        updateCustomizationStatsUI();
+    });
     goToFightBtn.addEventListener('click', () => {
         homeScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
         startNewFight();
     });
-
-    colorHueSlider.addEventListener('input', drawCharacterOnCanvas);
     characterChoices.forEach(choice => choice.addEventListener('change', (e) => {
         loadCharacterImage(e.target.value);
     }));
@@ -90,43 +105,43 @@ document.addEventListener('DOMContentLoaded', () => {
             updateHomeUI();
         } else {
             player = { name: name };
-            generateInitialStats();
+            generateInitialStats(player);
             updateCustomizationStatsUI();
             customizationScreen.classList.remove('hidden');
             loadCharacterImage(document.querySelector('input[name="character-choice"]:checked').value);
         }
     }
     
-    function generateInitialStats() {
-        let strength = 1;
-        let speed = 1;
-        let agility = 1;
-        let remainingPoints = 6;
-        while (remainingPoints > 0) {
-            const r = Math.floor(Math.random() * 3);
-            if (r === 0) strength++;
-            else if (r === 1) speed++;
-            else agility++;
-            remainingPoints--;
+    function generateInitialStats(charObject) {
+        // Assign fixed secondary stats
+        charObject.HP = 1000;
+        charObject['Crit Rate'] = 15;
+        charObject['Crit Dmg'] = 150;
+        charObject.Accuracy = 15;
+        charObject.Resistance = 30;
+
+        // Distribute core stats (ATK, DEF, Agility, Speed)
+        // Total must be 500, with a minimum of 100 in each.
+        let pointsToDistribute = 500 - (100 * 4); // 100 points to distribute
+        let coreStats = { ATK: 100, DEF: 100, Agility: 100, Speed: 100 };
+        let statKeys = Object.keys(coreStats);
+
+        for (let i = 0; i < pointsToDistribute; i++) {
+            let randomStat = statKeys[Math.floor(Math.random() * statKeys.length)];
+            coreStats[randomStat]++;
         }
-        player.strength = strength;
-        player.speed = speed;
-        player.agility = agility;
+        Object.assign(charObject, coreStats);
     }
     
     function finalizeCharacterCreation() {
         const finalImage = characterCanvas.toDataURL();
         Object.assign(player, {
             level: 1,
-            hp: 100,
-            maxHp: 100,
             xp: 0,
             xpToNextLevel: 10,
-            skills: ["Basic Attack"],
-            customization: {
-                characterImage: finalImage
-            }
+            image: finalImage
         });
+        player.maxHP = player.HP; // Set max HP for healing
 
         savePlayer();
         customizationScreen.classList.add('hidden');
@@ -150,22 +165,24 @@ document.addEventListener('DOMContentLoaded', () => {
         enemy = {
             name: name,
             level: level,
-            hp: 80 + level * 20,
-            maxHp: 80 + level * 20,
-            strength: 8 + level * 2,
-            speed: 4 + level,
-            agility: 3 + level,
+            HP: 800 + level * 200,
+            ATK: 50 + level * 10,
+            DEF: 40 + level * 10,
+            Speed: player.Speed - 5 + level,
+            'Crit Rate': 10,
+            'Crit Dmg': 125,
             imageSrc: image
         };
+        enemy.maxHP = enemy.HP;
     }
 
     function fight() {
-        let attacker = player.speed >= enemy.speed ? player : enemy;
+        let attacker = player.Speed >= enemy.Speed ? player : enemy;
         let defender = attacker === player ? enemy : player;
         let turn = 1;
 
         const fightInterval = setInterval(() => {
-            if (player.hp <= 0 || enemy.hp <= 0) {
+            if (player.HP <= 0 || enemy.HP <= 0) {
                 clearInterval(fightInterval);
                 endFight();
                 return;
@@ -179,15 +196,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function performAttack(attacker, defender) {
-        // Agility gives a small chance to dodge
-        if (Math.random() * 20 < defender.agility) {
-            logMessage(`${defender.name} dodges ${attacker.name}'s attack!`);
-            return;
-        }
+        const isCrit = Math.random() < (attacker['Crit Rate'] / 100);
+        const damageMultiplier = isCrit ? (attacker['Crit Dmg'] / 100) : 1;
+        
+        const baseDamage = attacker.ATK * (0.9 + Math.random() * 0.2);
+        const damageBeforeDefense = baseDamage * damageMultiplier;
 
-        const damage = Math.floor(attacker.strength + (Math.random() * attacker.strength / 2));
-        defender.hp = Math.max(0, defender.hp - damage);
-        logMessage(`${attacker.name} attacks ${defender.name} for ${damage} damage!`);
+        const defenseFactor = 100 / (100 + defender.DEF);
+        const finalDamage = Math.round(damageBeforeDefense * defenseFactor);
+
+        defender.HP = Math.max(0, defender.HP - finalDamage);
+
+        let attackMessage = `${attacker.name} attacks ${defender.name} for ${finalDamage} damage!`;
+        if (isCrit) {
+            attackMessage = `CRITICAL HIT! ${attacker.name} strikes ${defender.name} for ${finalDamage} damage!`;
+        }
+        logMessage(attackMessage);
 
         const attackerElement = (attacker === player) ? playerContainer : enemyContainer;
         attackerElement.classList.add('attack');
@@ -195,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function endFight() {
-        if (player.hp <= 0) {
+        if (player.HP <= 0) {
             logMessage(`You have been defeated by ${enemy.name}!`);
         } else {
             logMessage(`You have vanquished ${enemy.name}!`);
@@ -204,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
             player.xp += xpGained;
             checkLevelUp();
         }
-        player.hp = player.maxHp;
+        player.HP = player.maxHP;
         savePlayer();
         
         logMessage(`Returning to Home...`);
@@ -222,11 +246,11 @@ document.addEventListener('DOMContentLoaded', () => {
             player.level++;
             player.xp = 0;
             player.xpToNextLevel = Math.floor(player.xpToNextLevel * 1.5);
-            player.maxHp += 20;
-            player.hp = player.maxHp;
-            player.strength += 2;
-            player.speed += 1;
-            player.agility += 1;
+            
+            player.maxHP += 100;
+            player.HP = player.maxHP;
+            player.ATK += 5;
+            player.DEF += 5;
 
             logMessage(`*** LEVEL UP! You are now level ${player.level}! ***`);
         }
@@ -239,11 +263,17 @@ document.addEventListener('DOMContentLoaded', () => {
         fightLog.scrollTop = fightLog.scrollHeight;
     }
 
-    // --- UI Updates ---
+    // --- UI Update Functions ---
     function updateCustomizationStatsUI() {
-        customStrengthEl.textContent = player.strength;
-        customSpeedEl.textContent = player.speed;
-        customAgilityEl.textContent = player.agility;
+        customHpEl.textContent = player.HP;
+        customAtkEl.textContent = player.ATK;
+        customDefEl.textContent = player.DEF;
+        customAgiEl.textContent = player.Agility;
+        customSpeedEl.textContent = player.Speed;
+        customCritRateEl.textContent = player['Crit Rate'] + '%';
+        customCritDmgEl.textContent = player['Crit Dmg'] + '%';
+        customAccuracyEl.textContent = player.Accuracy + '%';
+        customResistanceEl.textContent = player.Resistance + '%';
     }
 
     function updateHomeUI() {
@@ -251,67 +281,55 @@ document.addEventListener('DOMContentLoaded', () => {
         homePlayerLevelEl.textContent = player.level;
         homePlayerXpEl.textContent = player.xp;
         homeXpToNextLevelEl.textContent = player.xpToNextLevel;
-        homePlayerHpEl.textContent = player.maxHp;
-        homePlayerStrengthEl.textContent = player.strength;
-        homePlayerSpeedEl.textContent = player.speed;
-        homePlayerAgilityEl.textContent = player.agility;
+        homePlayerHpEl.textContent = player.maxHP;
+        homePlayerAtkEl.textContent = player.ATK;
+        homePlayerDefEl.textContent = player.DEF;
+        homePlayerAgiEl.textContent = player.Agility;
+        homePlayerSpeedEl.textContent = player.Speed;
+        homePlayerCritRateEl.textContent = player['Crit Rate'];
+        homePlayerCritDmgEl.textContent = player['Crit Dmg'];
+        homePlayerAccuracyEl.textContent = player.Accuracy;
+        homePlayerResistanceEl.textContent = player.Resistance;
+
 
         homeCharacterDisplay.innerHTML = '';
-        if (player.customization && player.customization.characterImage) {
+        if (player.image) {
             const img = new Image();
-            img.src = player.customization.characterImage;
+            img.src = player.image;
             homeCharacterDisplay.appendChild(img);
-        }
-
-        playerSkillsEl.innerHTML = '';
-        if(player.skills) {
-            player.skills.forEach(skill => {
-                const li = document.createElement('li');
-                li.textContent = skill;
-                playerSkillsEl.appendChild(li);
-            });
         }
     }
 
     function updateGameUI() {
+        // Player
         playerNameEl.textContent = player.name;
         playerLevelEl.textContent = player.level;
-        playerHpEl.textContent = player.hp;
-
-        if (player.customization && player.customization.characterImage) {
-            playerImageEl.src = player.customization.characterImage;
+        playerHpEl.textContent = player.HP;
+        if (player.image) {
+            playerImageEl.src = player.image;
         }
 
+        // Enemy
         enemyNameEl.textContent = enemy.name || 'Enemy';
         enemyLevelEl.textContent = enemy.level || '1';
-        enemyHpEl.textContent = enemy.hp || '100';
+        enemyHpEl.textContent = enemy.HP || '...';
         enemyImageEl.src = enemy.imageSrc || '';
     }
 
-    // --- Customization UI ---
     function loadCharacterImage(src) {
-        currentCharacterImg.src = src; // Set src immediately
-        currentCharacterImg.onload = () => {
-            drawCharacterOnCanvas();
-        };
-        // If image is already cached, onload might not fire, so draw it just in case
-        if (currentCharacterImg.complete) {
-            drawCharacterOnCanvas();
-        }
+        currentCharacterImg.src = src;
+        currentCharacterImg.onload = () => drawCharacterOnCanvas();
+        if (currentCharacterImg.complete) drawCharacterOnCanvas();
     }
 
     function drawCharacterOnCanvas() {
         ctx.clearRect(0, 0, characterCanvas.width, characterCanvas.height);
-        ctx.filter = `hue-rotate(${colorHueSlider.value}deg)`;
-
         const hRatio = characterCanvas.width / currentCharacterImg.width;
         const vRatio = characterCanvas.height / currentCharacterImg.height;
         const ratio = Math.min(hRatio, vRatio) * 0.9;
         const centerShift_x = (characterCanvas.width - currentCharacterImg.width * ratio) / 2;
         const centerShift_y = (characterCanvas.height - currentCharacterImg.height * ratio) / 2;
-
         ctx.drawImage(currentCharacterImg, 0, 0, currentCharacterImg.width, currentCharacterImg.height,
             centerShift_x, centerShift_y, currentCharacterImg.width * ratio, currentCharacterImg.height * ratio);
-        ctx.filter = 'none';
     }
 });
