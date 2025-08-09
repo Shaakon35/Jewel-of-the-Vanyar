@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBrute</title>
+    <link rel="stylesheet" href="style.css">
+</head><body>
+    <div id="creation-screen">
+        <h1>CREATE YOUR BRUTE</h1>
+        <input type="text" id="brute-name-input" placeholder="Enter a name">
+        <button id="create-brute-btn">Validate</button>
+    </div>
+
+    <div id="game-screen" class="hidden">
+        <div id="arena">
+            <div class="brute-container" id="player-container">
+                <h2 id="player-name"></h2>
+                <div class="stats">
+                    <p>Level: <span id="player-level">1</span></p>
+                    <p>HP: <span id="player-hp">100</span></p>
+                </div>
+                <img src="images/player.png" alt="Player Brute" class="brute-image">
+            </div>
+
+            <div id="fight-log-container">
+                <div id="fight-log"></div>
+                <button id="fight-btn" class="hidden">Find a New Opponent</button>
+            </div>
+
+            <div class="brute-container" id="enemy-container">
+                <h2 id="enemy-name"></h2>
+                <div class="stats">
+                    <p>Level: <span id="enemy-level">1</span></p>
+                    <p>HP: <span id="enemy-hp">100</span></p>
+                </div>
+                <img src="images/enemy.png" alt="Enemy Brute" class="brute-image">
+            </div>
+        </div>
+        <div id="progression">
+            <h3>Progression</h3>
+            <p>Experience: <span id="player-xp">0</span> / <span id="xp-to-next-level">10</span></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

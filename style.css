@@ -1,0 +1,110 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-transform: uppercase;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#creation-screen {
+    margin-top: 100px;
+}
+
+#brute-name-input {
+    padding: 10px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #d4ac0d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #f1c40f;
+}
+
+#game-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#arena {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: url('images/arena.jpg') no-repeat center center;
+    background-size: cover;
+    width: 90%;
+    max-width: 1000px;
+    height: 500px;
+    border: 5px solid #8b4513;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.brute-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+}
+
+.brute-image {
+    max-height: 250px;
+    transition: transform 0.1s ease-in-out;
+}
+
+.brute-container.attack {
+    transform: scale(1.1);
+}
+
+.stats {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#fight-log-container {
+    width: 300px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#fight-log {
+    height: 350px;
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 14px;
+}
+
+#progression {
+    margin-top: 20px;
+    background-color: #555;
+    padding: 15px;
+    border-radius: 5px;
+    width: 90%;
+    max-width: 1000px;
+}
