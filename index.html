@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyBrute</title>
+    <title>Jewel of the Vanyar</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,42 +17,29 @@
         <h1>CUSTOMIZE YOUR BRUTE</h1>
         <div id="customization-container">
             <div id="character-preview">
-                <div class="brute-visual">
-                    </div>
+                <canvas id="character-canvas" width="300" height="400"></canvas>
             </div>
             <div class="customization-options">
-                <div class="option">
-                    <label for="gender-select">Gender:</label>
-                    <select id="gender-select">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
+                <h3>Choose your Brute:</h3>
+                <div id="character-selector">
+                    <label>
+                        <input type="radio" name="character-choice" value="images/character1.jpg" checked>
+                        <img src="images/character1.jpg" alt="Character 1" class="character-option-img">
+                    </label>
+                    <label>
+                        <input type="radio" name="character-choice" value="images/character2.jpg">
+                        <img src="images/character2.jpg" alt="Character 2" class="character-option-img">
+                    </label>
+                    <label>
+                        <input type="radio" name="character-choice" value="images/character3.jpg">
+                        <img src="images/character3.jpg" alt="Character 3" class="character-option-img">
+                    </label>
                 </div>
+                <h3>Customize Color:</h3>
                 <div class="option">
-                    <label for="haircut-select">Haircut:</label>
-                    <select id="haircut-select">
-                        <option value="short">Short</option>
-                        <option value="long">Long</option>
-                        <option value="mohawk">Mohawk</option>
-                    </select>
+                    <label for="color-hue-slider">Color Hue:</label>
+                    <input type="range" id="color-hue-slider" min="0" max="360" value="0">
                 </div>
-                <div class="option">
-                    <label for="shape-select">Shape:</label>
-                    <select id="shape-select">
-                        <option value="muscular">Muscular</option>
-                        <option value="slim">Slim</option>
-                        <option value="stocky">Stocky</option>
-                    </select>
-                </div>
-                <div class="option">
-                    <label for="color-body">Body Color:</label>
-                    <input type="color" id="color-body" value="#c58c85">
-                </div>
-                <div class="option">
-                    <label for="color-hair">Hair Color:</label>
-                    <input type="color" id="color-hair" value="#2d2d2d">
-                </div>
-                <button id="randomize-colors-btn">Randomize Colors</button>
             </div>
         </div>
          <button id="accept-customization-btn">Create Brute</button>
@@ -61,6 +48,7 @@
     <div id="home-screen" class="hidden">
         <h1>HOME</h1>
         <div id="player-summary">
+            <div id="home-character-display"></div>
             <h2 id="home-player-name"></h2>
             <div class="stats">
                 <p>Level: <span id="home-player-level">1</span></p>
@@ -83,27 +71,22 @@
                     <p>Level: <span id="player-level">1</span></p>
                     <p>HP: <span id="player-hp">100</span></p>
                 </div>
-                <img src="images/player.png" alt="Player Brute" class="brute-image">
+                <img src="" alt="Player Brute" class="brute-image" id="player-image">
             </div>
-
-            <div id="fight-log-container">
-                <div id="fight-log"></div>
-            </div>
-
             <div class="brute-container" id="enemy-container">
-                <h2 id="enemy-name"></h2>
+                 <h2 id="enemy-name"></h2>
                 <div class="stats">
                     <p>Level: <span id="enemy-level">1</span></p>
                     <p>HP: <span id="enemy-hp">100</span></p>
                 </div>
-                <img src="images/enemy.png" alt="Enemy Brute" class="brute-image">
+                 <img src="images/enemy.svg" alt="Enemy Brute" class="brute-image">
             </div>
         </div>
-        <div id="progression">
-            <h3>Progression</h3>
-            <p>Experience: <span id="player-xp">0</span> / <span id="xp-to-next-level">10</span></p>
-        </div>
+         <div id="fight-log-container">
+             <div id="fight-log"></div>
+         </div>
     </div>
+
 
     <script src="script.js"></script>
 </body>

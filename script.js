@@ -9,19 +9,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Creation
     const createBruteBtn = document.getElementById('create-brute-btn');
     const bruteNameInput = document.getElementById('brute-name-input');
-    
+
     // Customization
     const acceptCustomizationBtn = document.getElementById('accept-customization-btn');
-    const randomizeColorsBtn = document.getElementById('randomize-colors-btn');
-    const genderSelect = document.getElementById('gender-select');
-    const haircutSelect = document.getElementById('haircut-select');
-    const shapeSelect = document.getElementById('shape-select');
-    const colorBody = document.getElementById('color-body');
-    const colorHair = document.getElementById('color-hair');
-    const characterPreview = document.querySelector('.brute-visual');
+    const characterChoices = document.querySelectorAll('input[name="character-choice"]');
+    const colorHueSlider = document.getElementById('color-hue-slider');
+    const characterCanvas = document.getElementById('character-canvas');
+    const ctx = characterCanvas.getContext('2d');
+    let currentCharacterImg = new Image();
 
     // Home
     const goToFightBtn = document.getElementById('go-to-fight-btn');
+    const homeCharacterDisplay = document.getElementById('home-character-display');
     const homePlayerNameEl = document.getElementById('home-player-name');
     const homePlayerLevelEl = document.getElementById('home-player-level');
     const homePlayerXpEl = document.getElementById('home-player-xp');
@@ -33,11 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Game
     const fightLog = document.getElementById('fight-log');
+    const playerContainer = document.getElementById('player-container');
     const playerNameEl = document.getElementById('player-name');
     const playerLevelEl = document.getElementById('player-level');
     const playerHpEl = document.getElementById('player-hp');
-    const playerXpEl = document.getElementById('player-xp');
-    const xpToNextLevelEl = document.getElementById('xp-to-next-level');
+    const playerImageEl = document.getElementById('player-image');
     const enemyNameEl = document.getElementById('enemy-name');
     const enemyLevelEl = document.getElementById('enemy-level');
     const enemyHpEl = document.getElementById('enemy-hp');
@@ -48,9 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const enemyNames = ["Grommash", "Skullcrusher", "Bonebreaker", "Gorehowl", "Nightfall"];
 
     // --- Event Listeners ---
+    // This handles the "Validate" button on the first screen.
     createBruteBtn.addEventListener('click', loadOrCreateBrute);
+
+    // This handles the "Create Brute" button on the customization screen.
     acceptCustomizationBtn.addEventListener('click', finalizeBruteCreation);
-    
+
+    // This handles the "Find a New Opponent" button on the home screen.
     goToFightBtn.addEventListener('click', () => {
         homeScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
@@ -58,8 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Customization Listeners
-    randomizeColorsBtn.addEventListener('click', randomizeColors);
-    [colorBody, colorHair].forEach(input => input.addEventListener('input', updateCharacterPreview));
+    colorHueSlider.addEventListener('input', drawCharacterOnCanvas);
+    characterChoices.forEach(choice => choice.addEventListener('change', (e) => {
+        loadCharacterImage(e.target.value);
+    }));
 
     // --- Game Logic ---
 
@@ -68,7 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem(`brute-${player.name}`, JSON.stringify(player));
         }
     }
-
+    
+    // Transition 1: From Creation to Home/Customization
     function loadOrCreateBrute() {
         const name = bruteNameInput.value.trim();
         if (name === "") {
@@ -78,21 +84,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const savedData = localStorage.getItem(`brute-${name}`);
 
+        creationScreen.classList.add('hidden'); // Hide the creation screen
+
         if (savedData) {
+            // If player exists, go to Home Screen
             player = JSON.parse(savedData);
-            creationScreen.classList.add('hidden');
             homeScreen.classList.remove('hidden');
             updateHomeUI();
             alert(`Welcome back, ${player.name}!`);
         } else {
+            // If new player, go to Customization Screen
             player = { name: name };
-            creationScreen.classList.add('hidden');
             customizationScreen.classList.remove('hidden');
-            updateCharacterPreview();
+            // Load the default selected character image
+            loadCharacterImage(document.querySelector('input[name="character-choice"]:checked').value);
         }
     }
 
+    // Transition 2: From Customization to Home
     function finalizeBruteCreation() {
+        // Create the final character image with color adjustments
+        const finalImage = characterCanvas.toDataURL();
+
         // Assign customization and base stats
         Object.assign(player, {
             level: 1,
@@ -104,22 +117,16 @@ document.addEventListener('DOMContentLoaded', () => {
             xpToNextLevel: 10,
             skills: ["Basic Attack"],
             customization: {
-                gender: genderSelect.value,
-                haircut: haircutSelect.value,
-                shape: shapeSelect.value,
-                colors: {
-                    body: colorBody.value,
-                    hair: colorHair.value
-                }
+                characterImage: finalImage
             }
         });
 
         savePlayer();
-        customizationScreen.classList.add('hidden');
-        homeScreen.classList.remove('hidden');
+        customizationScreen.classList.add('hidden'); // Hide customization
+        homeScreen.classList.remove('hidden');      // Show home screen
         updateHomeUI();
     }
-    
+
     function startNewFight() {
         generateEnemy();
         updateGameUI();
@@ -164,15 +171,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const damage = Math.floor(attacker.strength + (Math.random() * attacker.strength / 2));
         defender.hp = Math.max(0, defender.hp - damage);
         logMessage(`${attacker.name} attacks ${defender.name} for ${damage} damage!`);
-        
-        const attackerElement = (attacker === player) ? 
-            document.getElementById('player-container') : 
+
+        const attackerElement = (attacker === player) ?
+            playerContainer :
             document.getElementById('enemy-container');
-            
+
         attackerElement.classList.add('attack');
         setTimeout(() => attackerElement.classList.remove('attack'), 200);
     }
     
+    // Transition 3: From Game to Home
     function endFight() {
         if (player.hp <= 0) {
             logMessage(`You have been defeated by ${enemy.name}!`);
@@ -185,14 +193,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         player.hp = player.maxHp;
         savePlayer();
-        
+
         logMessage(`Returning to Home...`);
         setTimeout(() => {
-            gameScreen.classList.add('hidden');
-            homeScreen.classList.remove('hidden');
+            gameScreen.classList.add('hidden'); // Hide game screen
+            homeScreen.classList.remove('hidden'); // Show home screen
             updateHomeUI();
         }, 3000);
-        
+
         updateGameUI();
     }
 
@@ -209,8 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (player.level % 3 === 0) {
                 const newSkill = "Power Attack";
                 if (!player.skills.includes(newSkill)) {
-                     player.skills.push(newSkill);
-                     logMessage(`*** You learned a new skill: ${newSkill}! ***`);
+                    player.skills.push(newSkill);
+                    logMessage(`*** You learned a new skill: ${newSkill}! ***`);
                 }
             }
             logMessage(`*** LEVEL UP! You are now level ${player.level}! ***`);
@@ -234,6 +242,13 @@ document.addEventListener('DOMContentLoaded', () => {
         homePlayerStrengthEl.textContent = player.strength;
         homePlayerSpeedEl.textContent = player.speed;
 
+        homeCharacterDisplay.innerHTML = '';
+        if (player.customization && player.customization.characterImage) {
+            const img = new Image();
+            img.src = player.customization.characterImage;
+            homeCharacterDisplay.appendChild(img);
+        }
+
         playerSkillsEl.innerHTML = '';
         player.skills.forEach(skill => {
             const li = document.createElement('li');
@@ -246,22 +261,37 @@ document.addEventListener('DOMContentLoaded', () => {
         playerNameEl.textContent = player.name;
         playerLevelEl.textContent = player.level;
         playerHpEl.textContent = player.hp;
-        playerXpEl.textContent = player.xp;
-        xpToNextLevelEl.textContent = player.xpToNextLevel;
-        enemyNameEl.textContent = enemy.name;
-        enemyLevelEl.textContent = enemy.level;
-        enemyHpEl.textContent = enemy.hp;
+
+        if (player.customization && player.customization.characterImage) {
+            playerImageEl.src = player.customization.characterImage;
+        }
+
+        enemyNameEl.textContent = enemy.name || 'Enemy';
+        enemyLevelEl.textContent = enemy.level || '1';
+        enemyHpEl.textContent = enemy.hp || '100';
     }
 
     // --- Customization UI ---
-    function randomizeColors() {
-        colorBody.value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-        colorHair.value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-        updateCharacterPreview();
+    function loadCharacterImage(src) {
+        currentCharacterImg.onload = () => {
+            drawCharacterOnCanvas();
+        };
+        currentCharacterImg.src = src;
     }
 
-    function updateCharacterPreview() {
-        characterPreview.style.setProperty('--body-color', colorBody.value);
-        characterPreview.style.setProperty('--hair-color', colorHair.value);
+    function drawCharacterOnCanvas() {
+        ctx.clearRect(0, 0, characterCanvas.width, characterCanvas.height);
+        ctx.filter = `hue-rotate(${colorHueSlider.value}deg)`;
+
+        // Draw the image centered and scaled to fit
+        const hRatio = characterCanvas.width / currentCharacterImg.width;
+        const vRatio = characterCanvas.height / currentCharacterImg.height;
+        const ratio = Math.min(hRatio, vRatio) * 0.9; // 0.9 to add some padding
+        const centerShift_x = (characterCanvas.width - currentCharacterImg.width * ratio) / 2;
+        const centerShift_y = (characterCanvas.height - currentCharacterImg.height * ratio) / 2;
+
+        ctx.drawImage(currentCharacterImg, 0, 0, currentCharacterImg.width, currentCharacterImg.height,
+            centerShift_x, centerShift_y, currentCharacterImg.width * ratio, currentCharacterImg.height * ratio);
+        ctx.filter = 'none'; // Reset filter
     }
 });
