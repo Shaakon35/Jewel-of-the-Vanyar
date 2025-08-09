@@ -3,17 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyCharacter</title>
+    <title>Jewel of the Vanyar</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="creation-screen">
+    <nav id="top-menu" class="hidden">
+        <button id="menu-home-btn">Home</button>
+        <button id="menu-fight-btn">Fight</button>
+        <button id="menu-ranking-btn">Ranking</button>
+    </nav>
+
+    <div id="creation-screen" class="screen-container">
         <h1>CREATE OR LOAD YOUR CHARACTER</h1>
         <input type="text" id="character-name-input" placeholder="Enter your character's name">
         <button id="create-character-btn">Validate</button>
     </div>
 
-    <div id="customization-screen" class="hidden">
+    <div id="customization-screen" class="screen-container hidden">
         <h1>CUSTOMIZE YOUR CHARACTER</h1>
         <div id="customization-container">
             <div id="character-preview">
@@ -22,7 +28,7 @@
             <div class="customization-options">
                 <h3>Choose your Appearance:</h3>
                 <div id="character-selector">
-                    <label>
+                     <label>
                         <input type="radio" name="character-choice" value="images/c1.png" checked>
                         <img src="images/c1.png" alt="Character 1" class="character-option-img">
                     </label>
@@ -53,53 +59,17 @@
                 </div>
                 
                 <h3>Base Stats:</h3>
-                <div id="customization-stats">
-                    <div class="stat-line">
-                        <img src="images/runes/PV.jpg" alt="HP" class="stat-logo">
-                        <span class="stat-label">HP</span>
-                        <span id="custom-hp" class="stat-value"></span>
-                    </div>
-                    <div class="stat-line">
-                        <img src="images/runes/ATK.jpg" alt="ATK" class="stat-logo">
-                        <span class="stat-label">ATK</span>
-                        <span id="custom-atk" class="stat-value"></span>
-                    </div>
-                    <div class="stat-line">
-                        <img src="images/runes/DEF.jpg" alt="DEF" class="stat-logo">
-                        <span class="stat-label">DEF</span>
-                        <span id="custom-def" class="stat-value"></span>
-                    </div>
-                    <div class="stat-line">
-                        <img src="images/runes/Agility.jpg" alt="Agility" class="stat-logo">
-                        <span class="stat-label">Agility</span>
-                        <span id="custom-agi" class="stat-value"></span>
-                    </div>
-                    <div class="stat-line">
-                        <img src="images/runes/Speed.jpg" alt="Speed" class="stat-logo">
-                        <span class="stat-label">Speed</span>
-                        <span id="custom-speed" class="stat-value"></span>
-                    </div>
+                <div class="stats-container">
+                    <div class="stat-line"><img src="images/runes/PV.jpg" alt="HP" class="stat-logo"><span class="stat-label">HP</span><span id="custom-hp" class="stat-value"></span></div>
+                    <div class="stat-line"><img src="images/runes/ATK.jpg" alt="Attack" class="stat-logo"><span class="stat-label">Attack</span><span id="custom-attack" class="stat-value"></span></div>
+                    <div class="stat-line"><img src="images/runes/DEF.jpg" alt="Defense" class="stat-logo"><span class="stat-label">Defense</span><span id="custom-defense" class="stat-value"></span></div>
+                    <div class="stat-line"><img src="images/runes/Agility.jpg" alt="Agility" class="stat-logo"><span class="stat-label">Agility</span><span id="custom-agi" class="stat-value"></span></div>
+                    <div class="stat-line"><img src="images/runes/Speed.jpg" alt="Speed" class="stat-logo"><span class="stat-label">Speed</span><span id="custom-speed" class="stat-value"></span></div>
                     <hr>
-                    <div class="stat-line">
-                        <img src="images/runes/CRIT.jpg" alt="Crit. Rate" class="stat-logo">
-                        <span class="stat-label">Crit. Rate</span>
-                        <span id="custom-crit-rate" class="stat-value"></span>
-                    </div>
-                    <div class="stat-line">
-                        <img src="images/runes/CRITDMG.jpg" alt="Crit. Dmg" class="stat-logo">
-                        <span class="stat-label">Crit. Dmg</span>
-                        <span id="custom-crit-dmg" class="stat-value"></span>
-                    </div>
-                    <div class="stat-line">
-                        <img src="images/runes/PREC.jpg" alt="Accuracy" class="stat-logo">
-                        <span class="stat-label">Accuracy</span>
-                        <span id="custom-accuracy" class="stat-value"></span>
-                    </div>
-                    <div class="stat-line">
-                        <img src="images/runes/RES.jpg" alt="Resistance" class="stat-logo">
-                        <span class="stat-label">Resistance</span>
-                        <span id="custom-resistance" class="stat-value"></span>
-                    </div>
+                    <div class="stat-line"><img src="images/runes/CRIT.jpg" alt="Crit. Rate" class="stat-logo"><span class="stat-label">Crit. Rate</span><span id="custom-crit-rate" class="stat-value"></span></div>
+                    <div class="stat-line"><img src="images/runes/CRITDMG.jpg" alt="Crit. Dmg" class="stat-logo"><span class="stat-label">Crit. Dmg</span><span id="custom-crit-dmg" class="stat-value"></span></div>
+                    <div class="stat-line"><img src="images/runes/PREC.jpg" alt="Accuracy" class="stat-logo"><span class="stat-label">Accuracy</span><span id="custom-accuracy" class="stat-value"></span></div>
+                    <div class="stat-line"><img src="images/runes/RES.jpg" alt="Resistance" class="stat-logo"><span class="stat-label">Resistance</span><span id="custom-resistance" class="stat-value"></span></div>
                 </div>
                 <button id="randomize-stats-btn">Randomize Stats</button>
             </div>
@@ -107,49 +77,151 @@
         <button id="accept-customization-btn">Create Character</button>
     </div>
 
-    <div id="home-screen" class="hidden">
-        <h1>HOME</h1>
+    <div id="home-screen" class="screen-container hidden">
         <div id="player-summary">
-            <div id="home-character-display"></div>
             <h2 id="home-player-name"></h2>
-            <div class="stats-grid">
-                <p><strong>Level</strong>: <span id="home-player-level"></span></p>
-                <p><strong>XP</strong>: <span id="home-player-xp"></span> / <span id="home-xp-to-next-level"></span></p>
-                <p><strong>HP</strong>: <span id="home-player-hp"></span></p>
-                <p><strong>ATK</strong>: <span id="home-player-atk"></span></p>
-                <p><strong>DEF</strong>: <span id="home-player-def"></span></p>
-                <p><strong>Agility</strong>: <span id="home-player-agi"></span></p>
-                <p><strong>Speed</strong>: <span id="home-player-speed"></span></p>
-                <p><strong>Crit. Rate</strong>: <span id="home-player-crit-rate"></span>%</p>
-                <p><strong>Crit. Dmg</strong>: <span id="home-player-crit-dmg"></span>%</p>
-                <p><strong>Accuracy</strong>: <span id="home-player-accuracy"></span>%</p>
-                <p><strong>Resistance</strong>: <span id="home-player-resistance"></span>%</p>
+            <div id="home-character-display"></div>
+            
+            <div id="level-xp-container">
+                <div id="level-display">Level <span id="home-player-level"></span></div>
+                <div class="xp-bar-container">
+                    <div id="xp-bar"></div>
+                    <div id="xp-text"></div>
+                </div>
+            </div>
+
+            <div id="career-stats">
+                <p>Total Fights: <span id="total-fights">0</span></p>
+                <p>Win Rate: <span id="win-rate">0%</span></p>
+            </div>
+
+            <div class="stats-grid-home">
+                <div class="column">
+                    <div class="stat-line"><img src="images/runes/PV.jpg" alt="HP" class="stat-logo"><span class="stat-label">HP</span><span id="home-player-hp" class="stat-value"></span></div>
+                    <div class="stat-line"><img src="images/runes/ATK.jpg" alt="Attack" class="stat-logo"><span class="stat-label">Attack</span><span id="home-player-attack" class="stat-value"></span><button class="stat-plus-btn hidden" data-stat="Attack">+</button><button class="stat-minus-btn hidden" data-stat="Attack">-</button></div>
+                    <div class="stat-line"><img src="images/runes/DEF.jpg" alt="Defense" class="stat-logo"><span class="stat-label">Defense</span><span id="home-player-defense" class="stat-value"></span><button class="stat-plus-btn hidden" data-stat="Defense">+</button><button class="stat-minus-btn hidden" data-stat="Defense">-</button></div>
+                    <div class="stat-line"><img src="images/runes/Agility.jpg" alt="Agility" class="stat-logo"><span class="stat-label">Agility</span><span id="home-player-agi" class="stat-value"></span><button class="stat-plus-btn hidden" data-stat="Agility">+</button><button class="stat-minus-btn hidden" data-stat="Agility">-</button></div>
+                    <div class="stat-line"><img src="images/runes/Speed.jpg" alt="Speed" class="stat-logo"><span class="stat-label">Speed</span><span id="home-player-speed" class="stat-value"></span><button class="stat-plus-btn hidden" data-stat="Speed">+</button><button class="stat-minus-btn hidden" data-stat="Speed">-</button></div>
+                </div>
+                <div class="column">
+                    <div class="stat-line"><img src="images/runes/CRIT.jpg" alt="Crit. Rate" class="stat-logo"><span class="stat-label">Crit. Rate</span><span id="home-player-crit-rate" class="stat-value"></span></div>
+                    <div class="stat-line"><img src="images/runes/CRITDMG.jpg" alt="Crit. Dmg" class="stat-logo"><span class="stat-label">Crit. Dmg</span><span id="home-player-crit-dmg" class="stat-value"></span></div>
+                    <div class="stat-line"><img src="images/runes/PREC.jpg" alt="Accuracy" class="stat-logo"><span class="stat-label">Accuracy</span><span id="home-player-accuracy" class="stat-value"></span></div>
+                    <div class="stat-line"><img src="images/runes/RES.jpg" alt="Resistance" class="stat-logo"><span class="stat-label">Resistance</span><span id="home-player-resistance" class="stat-value"></span></div>
+                </div>
+            </div>
+            <div id="stat-points-allocation" class="hidden">
+                <p id="stat-points-text">Points to spend: <span id="points-to-spend">0</span></p>
+                <button id="save-stats-btn">Save Points</button>
             </div>
         </div>
         <button id="go-to-fight-btn">Find a New Opponent</button>
+        <p id="fights-remaining-text"></p>
     </div>
 
-    <div id="game-screen" class="hidden">
+    <div id="game-screen" class="screen-container hidden">
+        <div id="battle-hud-top">
+            <div id="player-hud" class="battle-hud">
+                <div class="hud-info">
+                    <h2 id="player-name-hud">Player</h2>
+                    <p>Level: <span id="player-level-hud">1</span></p>
+                </div>
+                <div class="hp-bar-container">
+                    <div id="player-hp-bar" class="hp-bar"></div>
+                    <span id="player-hp-text" class="hp-text"></span>
+                </div>
+                <div class="stats-panel-container">
+                    <div class="toggle-stats-btn" id="player-stats-toggle">Statistics</div>
+                    <div class="stats-panel" id="player-stats-panel">
+                        <div class="panel-grid">
+                            <div><div class="stat-line"><img src="images/runes/PV.jpg" alt="HP" class="stat-logo"><span class="stat-label">HP</span><span id="fight-player-hp" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/ATK.jpg" alt="Attack" class="stat-logo"><span class="stat-label">Attack</span><span id="fight-player-attack" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/DEF.jpg" alt="Defense" class="stat-logo"><span class="stat-label">Defense</span><span id="fight-player-defense" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/Agility.jpg" alt="Agility" class="stat-logo"><span class="stat-label">Agility</span><span id="fight-player-agi" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/Speed.jpg" alt="Speed" class="stat-logo"><span class="stat-label">Speed</span><span id="fight-player-speed" class="stat-value"></span></div>
+                            </div>
+                            <div><div class="stat-line"><img src="images/runes/CRIT.jpg" alt="Crit. Rate" class="stat-logo"><span class="stat-label">Crit. Rate</span><span id="fight-player-crit-rate" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/CRITDMG.jpg" alt="Crit. Dmg" class="stat-logo"><span class="stat-label">Crit. Dmg</span><span id="fight-player-crit-dmg" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/PREC.jpg" alt="Accuracy" class="stat-logo"><span class="stat-label">Accuracy</span><span id="fight-player-accuracy" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/RES.jpg" alt="Resistance" class="stat-logo"><span class="stat-label">Resistance</span><span id="fight-player-resistance" class="stat-value"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="enemy-hud" class="battle-hud">
+                 <div class="hud-info">
+                    <h2 id="enemy-name-hud">Enemy</h2>
+                    <p>Level: <span id="enemy-level-hud">1</span></p>
+                </div>
+                <div class="hp-bar-container">
+                    <div id="enemy-hp-bar" class="hp-bar"></div>
+                    <span id="enemy-hp-text" class="hp-text"></span>
+                </div>
+                <div class="stats-panel-container">
+                    <div class="toggle-stats-btn" id="enemy-stats-toggle">Statistics</div>
+                    <div class="stats-panel" id="enemy-stats-panel">
+                        <div class="panel-grid">
+                            <div><div class="stat-line"><img src="images/runes/PV.jpg" alt="HP" class="stat-logo"><span class="stat-label">HP</span><span id="fight-enemy-hp" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/ATK.jpg" alt="Attack" class="stat-logo"><span class="stat-label">Attack</span><span id="fight-enemy-attack" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/DEF.jpg" alt="Defense" class="stat-logo"><span class="stat-label">Defense</span><span id="fight-enemy-defense" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/Agility.jpg" alt="Agility" class="stat-logo"><span class="stat-label">Agility</span><span id="fight-enemy-agi" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/Speed.jpg" alt="Speed" class="stat-logo"><span class="stat-label">Speed</span><span id="fight-enemy-speed" class="stat-value"></span></div>
+                            </div>
+                            <div><div class="stat-line"><img src="images/runes/CRIT.jpg" alt="Crit. Rate" class="stat-logo"><span class="stat-label">Crit. Rate</span><span id="fight-enemy-crit-rate" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/CRITDMG.jpg" alt="Crit. Dmg" class="stat-logo"><span class="stat-label">Crit. Dmg</span><span id="fight-enemy-crit-dmg" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/PREC.jpg" alt="Accuracy" class="stat-logo"><span class="stat-label">Accuracy</span><span id="fight-enemy-accuracy" class="stat-value"></span></div>
+                                <div class="stat-line"><img src="images/runes/RES.jpg" alt="Resistance" class="stat-logo"><span class="stat-label">Resistance</span><span id="fight-enemy-resistance" class="stat-value"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
         <div id="arena">
             <div class="character-container" id="player-container">
-                <h2 id="player-name"></h2>
-                <div class="stats">
-                    <p>Level: <span id="player-level"></span></p>
-                    <p>HP: <span id="player-hp"></span></p>
-                </div>
                 <img src="" alt="Player Character" class="character-image" id="player-image">
             </div>
-            <div id="fight-log-container">
-                 <div id="fight-log"></div>
-            </div>
             <div class="character-container" id="enemy-container">
-                 <h2 id="enemy-name"></h2>
-                <div class="stats">
-                    <p>Level: <span id="enemy-level"></span></p>
-                    <p>HP: <span id="enemy-hp"></span></p>
-                </div>
-                 <img src="" alt="Enemy Character" class="character-image" id="enemy-image">
+                <img src="" alt="Enemy Character" class="character-image" id="enemy-image">
             </div>
+        </div>
+    
+        <div id="battle-log-bottom">
+            <div id="fight-log"></div>
+        </div>
+        <button id="speed-toggle-btn">Speed x1</button>
+    </div>
+
+    <div id="ranking-screen" class="screen-container hidden">
+        <div id="ranking-modal">
+            <h2><span id="ranking-title"></span> Ranking</h2>
+            <div id="ranking-controls">
+                <button data-sort="tier" class="active">Tier Ranking</button>
+                <button data-sort="level">Level Ranking</button>
+            </div>
+            <div id="ranking-tier-filters">
+                <button data-tier="all" class="active">All</button>
+                <button data-tier="gold">Gold</button>
+                <button data-tier="silver">Silver</button>
+                <button data-tier="bronze">Bronze</button>
+            </div>
+            <table id="ranking-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Tier</th>
+                        <th>Level</th>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                        <th>Winrate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
         </div>
     </div>
 
