@@ -5,11 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyBrute</title>
     <link rel="stylesheet" href="style.css">
-</head><body>
+</head>
+<body>
     <div id="creation-screen">
-        <h1>CREATE YOUR BRUTE</h1>
-        <input type="text" id="brute-name-input" placeholder="Enter a name">
+        <h1>CREATE OR LOAD YOUR BRUTE</h1>
+        <input type="text" id="brute-name-input" placeholder="Enter your name">
         <button id="create-brute-btn">Validate</button>
+    </div>
+
+    <div id="customization-screen" class="hidden">
+        <h1>CUSTOMIZE YOUR BRUTE</h1>
+        <div id="customization-container">
+            <div id="character-preview">
+                <div class="brute-visual">
+                    </div>
+            </div>
+            <div class="customization-options">
+                <div class="option">
+                    <label for="gender-select">Gender:</label>
+                    <select id="gender-select">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="option">
+                    <label for="haircut-select">Haircut:</label>
+                    <select id="haircut-select">
+                        <option value="short">Short</option>
+                        <option value="long">Long</option>
+                        <option value="mohawk">Mohawk</option>
+                    </select>
+                </div>
+                <div class="option">
+                    <label for="shape-select">Shape:</label>
+                    <select id="shape-select">
+                        <option value="muscular">Muscular</option>
+                        <option value="slim">Slim</option>
+                        <option value="stocky">Stocky</option>
+                    </select>
+                </div>
+                <div class="option">
+                    <label for="color-body">Body Color:</label>
+                    <input type="color" id="color-body" value="#c58c85">
+                </div>
+                <div class="option">
+                    <label for="color-hair">Hair Color:</label>
+                    <input type="color" id="color-hair" value="#2d2d2d">
+                </div>
+                <button id="randomize-colors-btn">Randomize Colors</button>
+            </div>
+        </div>
+         <button id="accept-customization-btn">Create Brute</button>
+    </div>
+
+    <div id="home-screen" class="hidden">
+        <h1>HOME</h1>
+        <div id="player-summary">
+            <h2 id="home-player-name"></h2>
+            <div class="stats">
+                <p>Level: <span id="home-player-level">1</span></p>
+                <p>Experience: <span id="home-player-xp">0</span> / <span id="home-xp-to-next-level">10</span></p>
+                <p>HP: <span id="home-player-hp">100</span></p>
+                <p>Strength: <span id="home-player-strength">10</span></p>
+                <p>Speed: <span id="home-player-speed">5</span></p>
+            </div>
+            <h3>Skills</h3>
+            <ul id="player-skills"></ul>
+        </div>
+        <button id="go-to-fight-btn">Find a New Opponent</button>
     </div>
 
     <div id="game-screen" class="hidden">
@@ -20,12 +83,11 @@
                     <p>Level: <span id="player-level">1</span></p>
                     <p>HP: <span id="player-hp">100</span></p>
                 </div>
-                <img src="images/player.svg" alt="Player Brute" class="brute-image">
+                <img src="images/player.png" alt="Player Brute" class="brute-image">
             </div>
 
             <div id="fight-log-container">
                 <div id="fight-log"></div>
-                <button id="fight-btn" class="hidden">Find a New Opponent</button>
             </div>
 
             <div class="brute-container" id="enemy-container">
@@ -34,7 +96,7 @@
                     <p>Level: <span id="enemy-level">1</span></p>
                     <p>HP: <span id="enemy-hp">100</span></p>
                 </div>
-                <img src="images/enemy.svg" alt="Enemy Brute" class="brute-image">
+                <img src="images/enemy.png" alt="Enemy Brute" class="brute-image">
             </div>
         </div>
         <div id="progression">

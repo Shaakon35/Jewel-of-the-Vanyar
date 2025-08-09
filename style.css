@@ -7,7 +7,7 @@ body {
     padding: 20px;
 }
 
-h1, h2 {
+h1, h2, h3 {
     text-transform: uppercase;
 }
 
@@ -15,8 +15,18 @@ h1, h2 {
     display: none !important;
 }
 
-#creation-screen {
-    margin-top: 100px;
+/* --- Screens --- */
+#creation-screen, #home-screen {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#customization-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #brute-name-input {
@@ -33,12 +43,98 @@ button {
     color: white;
     border: none;
     border-radius: 5px;
+    margin-top: 10px;
 }
 
 button:hover {
     background-color: #f1c40f;
 }
 
+/* --- Customization Screen --- */
+#customization-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    width: 100%;
+    max-width: 800px;
+    margin: 20px 0;
+}
+
+#character-preview {
+    flex-basis: 300px;
+    height: 400px;
+    background-color: #444;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #222;
+}
+
+.brute-visual {
+    width: 150px;
+    height: 250px;
+    background-color: var(--body-color, #c58c85);
+    border-radius: 10px;
+    position: relative;
+    transition: background-color 0.3s;
+}
+
+.brute-visual::before { /* Hair */
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 40px;
+    background-color: var(--hair-color, #2d2d2d);
+    border-radius: 20px 20px 5px 5px;
+    transition: background-color 0.3s;
+}
+
+.customization-options {
+    flex-basis: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.option label {
+    margin-right: 10px;
+}
+
+input[type="color"] {
+    width: 50px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    background: none;
+}
+
+/* --- Home Screen --- */
+#home-screen #player-summary {
+    background-color: #555;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+}
+
+#home-screen #player-skills {
+    list-style: none;
+    padding: 0;
+}
+
+
+/* --- Game Screen --- */
 #game-screen {
     display: flex;
     flex-direction: column;
@@ -49,7 +145,7 @@ button:hover {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background: url('images/arena.svg') no-repeat center center;
+    background: url('images/arena.jpg') no-repeat center center;
     background-size: cover;
     width: 90%;
     max-width: 1000px;
@@ -91,7 +187,7 @@ button:hover {
 }
 
 #fight-log {
-    height: 350px;
+    height: 400px;
     overflow-y: auto;
     background-color: rgba(0, 0, 0, 0.7);
     padding: 10px;
