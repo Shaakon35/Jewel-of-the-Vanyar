@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jewel of the Vanyar</title>
+    <title>MyCharacter</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="creation-screen">
-        <h1>CREATE OR LOAD YOUR BRUTE</h1>
-        <input type="text" id="brute-name-input" placeholder="Enter your name">
-        <button id="create-brute-btn">Validate</button>
+        <h1>CREATE OR LOAD YOUR CHARACTER</h1>
+        <input type="text" id="character-name-input" placeholder="Enter your character's name">
+        <button id="create-character-btn">Validate</button>
     </div>
 
     <div id="customization-screen" class="hidden">
-        <h1>CUSTOMIZE YOUR BRUTE</h1>
+        <h1>CUSTOMIZE YOUR CHARACTER</h1>
         <div id="customization-container">
             <div id="character-preview">
                 <canvas id="character-canvas" width="300" height="400"></canvas>
             </div>
             <div class="customization-options">
-                <h3>Choose your Brute:</h3>
+                <h3>Choose your Appearance:</h3>
                 <div id="character-selector">
                     <label>
                         <input type="radio" name="character-choice" value="images/character1.jpg" checked>
@@ -35,14 +35,33 @@
                         <img src="images/character3.jpg" alt="Character 3" class="character-option-img">
                     </label>
                 </div>
+                
+                <h3>Base Stats (Sum = 9):</h3>
+                <div id="customization-stats">
+                    <p>Strength: <span id="custom-strength"></span></p>
+                    <p>Speed: <span id="custom-speed"></span></p>
+                    <p>Agility: <span id="custom-agility"></span></p>
+                </div>
+
                 <h3>Customize Color:</h3>
                 <div class="option">
                     <label for="color-hue-slider">Color Hue:</label>
                     <input type="range" id="color-hue-slider" min="0" max="360" value="0">
                 </div>
+                 <div class="option-note">
+                    <i>Note: The options below require layered image assets to function.</i>
+                </div>
+                <div class="option">
+                    <label for="color-hair">Hair Color:</label>
+                    <input type="color" id="color-hair" value="#4d4d4d" disabled>
+                </div>
+                <div class="option">
+                    <label for="color-weapon">Weapon Color:</label>
+                    <input type="color" id="color-weapon" value="#808080" disabled>
+                </div>
             </div>
         </div>
-         <button id="accept-customization-btn">Create Brute</button>
+         <button id="accept-customization-btn">Create Character</button>
     </div>
 
     <div id="home-screen" class="hidden">
@@ -56,6 +75,7 @@
                 <p>HP: <span id="home-player-hp">100</span></p>
                 <p>Strength: <span id="home-player-strength">10</span></p>
                 <p>Speed: <span id="home-player-speed">5</span></p>
+                 <p>Agility: <span id="home-player-agility">5</span></p>
             </div>
             <h3>Skills</h3>
             <ul id="player-skills"></ul>
@@ -65,28 +85,27 @@
 
     <div id="game-screen" class="hidden">
         <div id="arena">
-            <div class="brute-container" id="player-container">
+            <div class="character-container" id="player-container">
                 <h2 id="player-name"></h2>
                 <div class="stats">
                     <p>Level: <span id="player-level">1</span></p>
                     <p>HP: <span id="player-hp">100</span></p>
                 </div>
-                <img src="" alt="Player Brute" class="brute-image" id="player-image">
+                <img src="" alt="Player Character" class="character-image" id="player-image">
             </div>
-            <div class="brute-container" id="enemy-container">
+            <div class="character-container" id="enemy-container">
                  <h2 id="enemy-name"></h2>
                 <div class="stats">
                     <p>Level: <span id="enemy-level">1</span></p>
                     <p>HP: <span id="enemy-hp">100</span></p>
                 </div>
-                 <img src="images/enemy.svg" alt="Enemy Brute" class="brute-image">
+                 <img src="" alt="Enemy Character" class="character-image" id="enemy-image">
             </div>
         </div>
          <div id="fight-log-container">
              <div id="fight-log"></div>
          </div>
     </div>
-
 
     <script src="script.js"></script>
 </body>

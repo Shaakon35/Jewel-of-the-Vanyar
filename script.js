@@ -6,17 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameScreen = document.getElementById('game-screen');
 
     // --- Elements ---
-    // Creation
-    const createBruteBtn = document.getElementById('create-brute-btn');
-    const bruteNameInput = document.getElementById('brute-name-input');
-
-    // Customization
+    const createCharacterBtn = document.getElementById('create-character-btn');
+    const characterNameInput = document.getElementById('character-name-input');
     const acceptCustomizationBtn = document.getElementById('accept-customization-btn');
     const characterChoices = document.querySelectorAll('input[name="character-choice"]');
     const colorHueSlider = document.getElementById('color-hue-slider');
     const characterCanvas = document.getElementById('character-canvas');
     const ctx = characterCanvas.getContext('2d');
     let currentCharacterImg = new Image();
+
+    // Customization Stats Display
+    const customStrengthEl = document.getElementById('custom-strength');
+    const customSpeedEl = document.getElementById('custom-speed');
+    const customAgilityEl = document.getElementById('custom-agility');
 
     // Home
     const goToFightBtn = document.getElementById('go-to-fight-btn');
@@ -28,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const homePlayerHpEl = document.getElementById('home-player-hp');
     const homePlayerStrengthEl = document.getElementById('home-player-strength');
     const homePlayerSpeedEl = document.getElementById('home-player-speed');
+    const homePlayerAgilityEl = document.getElementById('home-player-agility');
     const playerSkillsEl = document.getElementById('player-skills');
 
     // Game
@@ -37,30 +40,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerLevelEl = document.getElementById('player-level');
     const playerHpEl = document.getElementById('player-hp');
     const playerImageEl = document.getElementById('player-image');
+    const enemyContainer = document.getElementById('enemy-container');
     const enemyNameEl = document.getElementById('enemy-name');
     const enemyLevelEl = document.getElementById('enemy-level');
     const enemyHpEl = document.getElementById('enemy-hp');
+    const enemyImageEl = document.getElementById('enemy-image');
 
     // --- Game State ---
     let player = {};
     let enemy = {};
+    const characterImages = ["images/character1.jpg", "images/character2.jpg", "images/character3.jpg"];
     const enemyNames = ["Grommash", "Skullcrusher", "Bonebreaker", "Gorehowl", "Nightfall"];
 
     // --- Event Listeners ---
-    // This handles the "Validate" button on the first screen.
-    createBruteBtn.addEventListener('click', loadOrCreateBrute);
-
-    // This handles the "Create Brute" button on the customization screen.
-    acceptCustomizationBtn.addEventListener('click', finalizeBruteCreation);
-
-    // This handles the "Find a New Opponent" button on the home screen.
+    createCharacterBtn.addEventListener('click', loadOrCreateCharacter);
+    acceptCustomizationBtn.addEventListener('click', finalizeCharacterCreation);
     goToFightBtn.addEventListener('click', () => {
         homeScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
         startNewFight();
     });
 
-    // Customization Listeners
     colorHueSlider.addEventListener('input', drawCharacterOnCanvas);
     characterChoices.forEach(choice => choice.addEventListener('change', (e) => {
         loadCharacterImage(e.target.value);
@@ -70,49 +70,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function savePlayer() {
         if (player.name) {
-            localStorage.setItem(`brute-${player.name}`, JSON.stringify(player));
+            localStorage.setItem(`character-${player.name}`, JSON.stringify(player));
         }
     }
     
-    // Transition 1: From Creation to Home/Customization
-    function loadOrCreateBrute() {
-        const name = bruteNameInput.value.trim();
+    function loadOrCreateCharacter() {
+        const name = characterNameInput.value.trim();
         if (name === "") {
             alert("Please enter a name!");
             return;
         }
 
-        const savedData = localStorage.getItem(`brute-${name}`);
-
-        creationScreen.classList.add('hidden'); // Hide the creation screen
+        const savedData = localStorage.getItem(`character-${name}`);
+        creationScreen.classList.add('hidden');
 
         if (savedData) {
-            // If player exists, go to Home Screen
             player = JSON.parse(savedData);
             homeScreen.classList.remove('hidden');
             updateHomeUI();
-            alert(`Welcome back, ${player.name}!`);
         } else {
-            // If new player, go to Customization Screen
             player = { name: name };
+            generateInitialStats();
+            updateCustomizationStatsUI();
             customizationScreen.classList.remove('hidden');
-            // Load the default selected character image
             loadCharacterImage(document.querySelector('input[name="character-choice"]:checked').value);
         }
     }
-
-    // Transition 2: From Customization to Home
-    function finalizeBruteCreation() {
-        // Create the final character image with color adjustments
+    
+    function generateInitialStats() {
+        let strength = 1;
+        let speed = 1;
+        let agility = 1;
+        let remainingPoints = 6;
+        while (remainingPoints > 0) {
+            const r = Math.floor(Math.random() * 3);
+            if (r === 0) strength++;
+            else if (r === 1) speed++;
+            else agility++;
+            remainingPoints--;
+        }
+        player.strength = strength;
+        player.speed = speed;
+        player.agility = agility;
+    }
+    
+    function finalizeCharacterCreation() {
         const finalImage = characterCanvas.toDataURL();
-
-        // Assign customization and base stats
         Object.assign(player, {
             level: 1,
             hp: 100,
             maxHp: 100,
-            strength: 10,
-            speed: 5,
             xp: 0,
             xpToNextLevel: 10,
             skills: ["Basic Attack"],
@@ -122,8 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         savePlayer();
-        customizationScreen.classList.add('hidden'); // Hide customization
-        homeScreen.classList.remove('hidden');      // Show home screen
+        customizationScreen.classList.add('hidden');
+        homeScreen.classList.remove('hidden');
         updateHomeUI();
     }
 
@@ -138,6 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateEnemy() {
         const name = enemyNames[Math.floor(Math.random() * enemyNames.length)];
         const level = Math.max(1, player.level + Math.floor(Math.random() * 3) - 1);
+        const image = characterImages[Math.floor(Math.random() * characterImages.length)];
+
         enemy = {
             name: name,
             level: level,
@@ -145,6 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
             maxHp: 80 + level * 20,
             strength: 8 + level * 2,
             speed: 4 + level,
+            agility: 3 + level,
+            imageSrc: image
         };
     }
 
@@ -168,19 +179,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function performAttack(attacker, defender) {
+        // Agility gives a small chance to dodge
+        if (Math.random() * 20 < defender.agility) {
+            logMessage(`${defender.name} dodges ${attacker.name}'s attack!`);
+            return;
+        }
+
         const damage = Math.floor(attacker.strength + (Math.random() * attacker.strength / 2));
         defender.hp = Math.max(0, defender.hp - damage);
         logMessage(`${attacker.name} attacks ${defender.name} for ${damage} damage!`);
 
-        const attackerElement = (attacker === player) ?
-            playerContainer :
-            document.getElementById('enemy-container');
-
+        const attackerElement = (attacker === player) ? playerContainer : enemyContainer;
         attackerElement.classList.add('attack');
         setTimeout(() => attackerElement.classList.remove('attack'), 200);
     }
     
-    // Transition 3: From Game to Home
     function endFight() {
         if (player.hp <= 0) {
             logMessage(`You have been defeated by ${enemy.name}!`);
@@ -193,14 +206,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         player.hp = player.maxHp;
         savePlayer();
-
+        
         logMessage(`Returning to Home...`);
         setTimeout(() => {
-            gameScreen.classList.add('hidden'); // Hide game screen
-            homeScreen.classList.remove('hidden'); // Show home screen
+            gameScreen.classList.add('hidden');
+            homeScreen.classList.remove('hidden');
             updateHomeUI();
         }, 3000);
-
+        
         updateGameUI();
     }
 
@@ -211,16 +224,10 @@ document.addEventListener('DOMContentLoaded', () => {
             player.xpToNextLevel = Math.floor(player.xpToNextLevel * 1.5);
             player.maxHp += 20;
             player.hp = player.maxHp;
-            player.strength += 3;
+            player.strength += 2;
             player.speed += 1;
+            player.agility += 1;
 
-            if (player.level % 3 === 0) {
-                const newSkill = "Power Attack";
-                if (!player.skills.includes(newSkill)) {
-                    player.skills.push(newSkill);
-                    logMessage(`*** You learned a new skill: ${newSkill}! ***`);
-                }
-            }
             logMessage(`*** LEVEL UP! You are now level ${player.level}! ***`);
         }
     }
@@ -233,6 +240,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- UI Updates ---
+    function updateCustomizationStatsUI() {
+        customStrengthEl.textContent = player.strength;
+        customSpeedEl.textContent = player.speed;
+        customAgilityEl.textContent = player.agility;
+    }
+
     function updateHomeUI() {
         homePlayerNameEl.textContent = player.name;
         homePlayerLevelEl.textContent = player.level;
@@ -241,6 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
         homePlayerHpEl.textContent = player.maxHp;
         homePlayerStrengthEl.textContent = player.strength;
         homePlayerSpeedEl.textContent = player.speed;
+        homePlayerAgilityEl.textContent = player.agility;
 
         homeCharacterDisplay.innerHTML = '';
         if (player.customization && player.customization.characterImage) {
@@ -250,11 +264,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         playerSkillsEl.innerHTML = '';
-        player.skills.forEach(skill => {
-            const li = document.createElement('li');
-            li.textContent = skill;
-            playerSkillsEl.appendChild(li);
-        });
+        if(player.skills) {
+            player.skills.forEach(skill => {
+                const li = document.createElement('li');
+                li.textContent = skill;
+                playerSkillsEl.appendChild(li);
+            });
+        }
     }
 
     function updateGameUI() {
@@ -269,29 +285,33 @@ document.addEventListener('DOMContentLoaded', () => {
         enemyNameEl.textContent = enemy.name || 'Enemy';
         enemyLevelEl.textContent = enemy.level || '1';
         enemyHpEl.textContent = enemy.hp || '100';
+        enemyImageEl.src = enemy.imageSrc || '';
     }
 
     // --- Customization UI ---
     function loadCharacterImage(src) {
+        currentCharacterImg.src = src; // Set src immediately
         currentCharacterImg.onload = () => {
             drawCharacterOnCanvas();
         };
-        currentCharacterImg.src = src;
+        // If image is already cached, onload might not fire, so draw it just in case
+        if (currentCharacterImg.complete) {
+            drawCharacterOnCanvas();
+        }
     }
 
     function drawCharacterOnCanvas() {
         ctx.clearRect(0, 0, characterCanvas.width, characterCanvas.height);
         ctx.filter = `hue-rotate(${colorHueSlider.value}deg)`;
 
-        // Draw the image centered and scaled to fit
         const hRatio = characterCanvas.width / currentCharacterImg.width;
         const vRatio = characterCanvas.height / currentCharacterImg.height;
-        const ratio = Math.min(hRatio, vRatio) * 0.9; // 0.9 to add some padding
+        const ratio = Math.min(hRatio, vRatio) * 0.9;
         const centerShift_x = (characterCanvas.width - currentCharacterImg.width * ratio) / 2;
         const centerShift_y = (characterCanvas.height - currentCharacterImg.height * ratio) / 2;
 
         ctx.drawImage(currentCharacterImg, 0, 0, currentCharacterImg.width, currentCharacterImg.height,
             centerShift_x, centerShift_y, currentCharacterImg.width * ratio, currentCharacterImg.height * ratio);
-        ctx.filter = 'none'; // Reset filter
+        ctx.filter = 'none';
     }
 });

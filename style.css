@@ -29,7 +29,7 @@ h1, h2, h3 {
     align-items: center;
 }
 
-#brute-name-input {
+#character-name-input {
     padding: 10px;
     font-size: 16px;
     margin-right: 10px;
@@ -77,6 +77,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    text-align: left;
 }
 
 .option {
@@ -87,6 +88,18 @@ button:hover {
 
 .option label {
     margin-right: 10px;
+}
+
+.option-note {
+    font-size: 12px;
+    color: #aaa;
+    text-align: center;
+    margin-top: 10px;
+}
+
+input[type="color"]:disabled {
+    cursor: not-allowed;
+    filter: grayscale(1);
 }
 
 #character-selector {
@@ -100,20 +113,26 @@ button:hover {
     cursor: pointer;
     border: 2px solid transparent;
     border-radius: 5px;
+    object-fit: cover;
+}
+
+input[type="radio"] {
+    display: none;
 }
 
 input[type="radio"]:checked + .character-option-img {
     border-color: #f1c40f;
 }
 
-
-input[type="color"] {
-    width: 50px;
-    height: 30px;
-    border: none;
-    cursor: pointer;
-    background: none;
+#customization-stats {
+    background-color: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 5px;
 }
+#customization-stats p {
+    margin: 5px 0;
+}
+
 
 /* --- Home Screen --- */
 #home-screen #player-summary {
@@ -157,19 +176,19 @@ input[type="color"] {
     padding: 20px;
 }
 
-.brute-container {
+.character-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 250px;
 }
 
-.brute-image {
+.character-image {
     max-height: 250px;
     transition: transform 0.1s ease-in-out;
 }
 
-.brute-container.attack {
+.character-container.attack {
     transform: scale(1.1);
 }
 
@@ -196,13 +215,4 @@ input[type="color"] {
     border-radius: 5px;
     text-align: left;
     font-size: 14px;
-}
-
-#progression {
-    margin-top: 20px;
-    background-color: #555;
-    padding: 15px;
-    border-radius: 5px;
-    width: 90%;
-    max-width: 1000px;
 }
