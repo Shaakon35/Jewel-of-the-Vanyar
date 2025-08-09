@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="500" viewBox="0 0 1000 500">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2b5876"/>
+      <stop offset="100%" stop-color="#4e4376"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="500" fill="url(#g)"/>
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" opacity="0.85" font-size="72" font-family="Arial, sans-serif">ARENA</text>
+</svg>
