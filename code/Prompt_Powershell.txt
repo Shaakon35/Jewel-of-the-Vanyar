@@ -1,0 +1,9 @@
+ cd 'C:\Users\legrasv\Documents\Jewel-of-the-Vanyar\'
+ git clone https://github.com/Shaakon35/Jewel-of-the-Vanyar.git .
+ # dotnet tool install --global dotnet-serve
+ dotnet serve --address localhost --port 5555
+ 
+ git add *
+ git commit -m "Adapt colors and skills"
+ git push origin main
+ 
