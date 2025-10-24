@@ -1,6 +1,6 @@
-## MyBrute
+## Jewel of the Vanyar
 
-A lightweight browser game where you create a custom brute, fight AI opponents in turn-based auto-battles, and level up to learn new skills. No accounts, no servers — your progress is saved in your browser.
+A lightweight browser game where you create a custom character, fight AI opponents in turn-based auto-battles, and level up to learn new skills. No accounts, no servers — your progress is saved in your browser.
 
 ### Overview
 - **Create or load** your brute by name
